@@ -4,6 +4,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import math
+import pickle
 
 import torch
 
@@ -131,6 +132,8 @@ class SequenceGenerator(object):
 
         # compute the encoder output for each beam
         encoder_outs = model.forward_encoder(encoder_input)
+        with open('./encoder_outs.pkl', 'w') as f:
+            pickle.dump(encoder_outs, f)
         new_order = torch.arange(bsz).view(-1, 1).repeat(1, beam_size).view(-1)
         new_order = new_order.to(src_tokens.device).long()
         encoder_outs = model.reorder_encoder_out(encoder_outs, new_order)
