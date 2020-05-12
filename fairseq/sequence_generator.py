@@ -132,8 +132,11 @@ class SequenceGenerator(object):
 
         # compute the encoder output for each beam
         encoder_outs = model.forward_encoder(encoder_input)
-        with open('./encoder_outs.pkl', 'wb') as f:
+        with open('./pos_encoder_outs.pkl', 'wb') as f:
             pickle.dump(encoder_outs, f)
+        #noize_model = torch.load('/notebooks/tmp/noize_model.h5')
+        #encoder_outs = noize_model(encoder_outs)
+        print(type(encoder_outs))
         new_order = torch.arange(bsz).view(-1, 1).repeat(1, beam_size).view(-1)
         new_order = new_order.to(src_tokens.device).long()
         encoder_outs = model.reorder_encoder_out(encoder_outs, new_order)
